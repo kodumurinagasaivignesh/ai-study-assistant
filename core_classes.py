@@ -20,11 +20,16 @@ class DatabaseManager:
     
     def __init__(self, db_path: Optional[str] = None):
         if db_path is None:
-            db_path = os.getenv('DATABASE_PATH') or os.path.join(
-                os.path.dirname(os.path.abspath(__file__)),
-                'database',
-                'study_assistant.db',
-            )
+            if os.getenv('DATABASE_PATH'):
+                db_path = os.getenv('DATABASE_PATH')
+            elif os.getenv('VERCEL'):
+                db_path = '/tmp/study_assistant.db'
+            else:
+                db_path = os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    'database',
+                    'study_assistant.db',
+                )
         self.db_path = os.path.abspath(db_path)
         os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
         self.init_database()
