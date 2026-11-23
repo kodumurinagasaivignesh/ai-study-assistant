@@ -354,8 +354,10 @@ if __name__ == '__main__':
     print("Database initializing...")
     
     # Run the application
+    port = int(os.getenv('PORT', 5000))
+    host = os.getenv('HOST', '0.0.0.0')
     app.run(
-        debug=os.getenv('DEBUG', 'True').lower() == 'true',
-        host='127.0.0.1',
-        port=5000
+        debug=os.getenv('DEBUG', 'False').lower() == 'true',
+        host=host,
+        port=port
     )
